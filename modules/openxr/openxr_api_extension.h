@@ -91,6 +91,17 @@ public:
 	void set_emulate_environment_blend_mode_alpha_blend(bool p_enabled);
 	OpenXRAlphaBlendModeSupport is_environment_blend_mode_alpha_blend_supported();
 
+	void set_environment_depth_texture_size(Size2i p_size);
+	void set_environment_depth_data(
+		uint32_t p_texture,
+		double p_near_z,
+		double p_far_z,
+		const Projection &p_view_projection_left,
+		const Projection &p_view_projection_right,
+		const Projection &p_projection_projection_left,
+		const Projection &p_projection_projection_right
+	);
+
 	OpenXRAPIExtension();
 };
 

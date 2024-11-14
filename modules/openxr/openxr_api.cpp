@@ -3532,6 +3532,37 @@ bool OpenXRAPI::set_environment_blend_mode(XrEnvironmentBlendMode p_blend_mode) 
 	return false;
 }
 
+static void set_projection(Projection &r_projection, const OpenXRUtil::XrMatrix4x4f &r_matrix) {
+	r_projection = Projection(
+		Vector4(r_matrix.m[0], r_matrix.m[1], r_matrix.m[2], r_matrix.m[3]),
+		Vector4(r_matrix.m[4], r_matrix.m[5], r_matrix.m[6], r_matrix.m[7]),
+		Vector4(r_matrix.m[8], r_matrix.m[9], r_matrix.m[10], r_matrix.m[11]),
+		Vector4(r_matrix.m[12], r_matrix.m[13], r_matrix.m[14], r_matrix.m[15])
+	);
+}
+
+void OpenXRAPI::set_environment_depth_texture_size(Size2i p_size) {
+	environment_depth_texture_size = p_size;
+}
+
+void OpenXRAPI::set_environment_depth_data(
+	uint32_t p_texture,
+	double p_near_z,
+	double p_far_z,
+	const Projection &p_view_projection_left,
+	const Projection &p_view_projection_right,
+	const Projection &p_projection_projection_left,
+	const Projection &p_projection_projection_right
+) {
+	environment_depth_texture = p_texture;
+	environment_depth_near_z = p_near_z;
+	environment_depth_far_z = p_far_z;
+	environment_depth_view_projections[0] = p_view_projection_left;
+	environment_depth_view_projections[1] = p_view_projection_right;
+	environment_depth_projection_projections[0] = p_projection_projection_left;
+	environment_depth_projection_projections[1] = p_projection_projection_right;
+}
+
 void OpenXRAPI::set_emulate_environment_blend_mode_alpha_blend(bool p_enabled) {
 	emulate_environment_blend_mode_alpha_blend = p_enabled;
 }

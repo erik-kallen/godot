@@ -64,6 +64,9 @@ void OpenXRAPIExtension::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_emulate_environment_blend_mode_alpha_blend", "enabled"), &OpenXRAPIExtension::set_emulate_environment_blend_mode_alpha_blend);
 	ClassDB::bind_method(D_METHOD("is_environment_blend_mode_alpha_supported"), &OpenXRAPIExtension::is_environment_blend_mode_alpha_blend_supported);
 
+	ClassDB::bind_method(D_METHOD("set_environment_depth_texture_size", "size"), &OpenXRAPIExtension::set_environment_depth_texture_size);
+	ClassDB::bind_method(D_METHOD("set_environment_depth_data", "texture", "near_z", "far_z", "view_projection_left", "view_projection_right", "projection_projection_left", "projection_projection_right"), &OpenXRAPIExtension::set_environment_depth_data);
+
 	BIND_ENUM_CONSTANT(OPENXR_ALPHA_BLEND_MODE_SUPPORT_NONE);
 	BIND_ENUM_CONSTANT(OPENXR_ALPHA_BLEND_MODE_SUPPORT_REAL);
 	BIND_ENUM_CONSTANT(OPENXR_ALPHA_BLEND_MODE_SUPPORT_EMULATING);
@@ -201,6 +204,24 @@ void OpenXRAPIExtension::set_emulate_environment_blend_mode_alpha_blend(bool p_e
 OpenXRAPIExtension::OpenXRAlphaBlendModeSupport OpenXRAPIExtension::is_environment_blend_mode_alpha_blend_supported() {
 	ERR_FAIL_NULL_V(OpenXRAPI::get_singleton(), OPENXR_ALPHA_BLEND_MODE_SUPPORT_NONE);
 	return (OpenXRAPIExtension::OpenXRAlphaBlendModeSupport)OpenXRAPI::get_singleton()->is_environment_blend_mode_alpha_blend_supported();
+}
+
+void OpenXRAPIExtension::set_environment_depth_texture_size(Size2i p_size) {
+	ERR_FAIL_NULL(OpenXRAPI::get_singleton());
+	OpenXRAPI::get_singleton()->set_environment_depth_texture_size(p_size);
+}
+
+void OpenXRAPIExtension::set_environment_depth_data(
+	uint32_t p_texture,
+	double p_near_z,
+	double p_far_z,
+	const Projection &p_view_projection_left,
+	const Projection &p_view_projection_right,
+	const Projection &p_projection_projection_left,
+	const Projection &p_projection_projection_right
+) {
+	ERR_FAIL_NULL(OpenXRAPI::get_singleton());
+	OpenXRAPI::get_singleton()->set_environment_depth_data(p_texture, p_near_z, p_far_z, p_view_projection_left, p_view_projection_right, p_projection_projection_left, p_projection_projection_right);
 }
 
 OpenXRAPIExtension::OpenXRAPIExtension() {

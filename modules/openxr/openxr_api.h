@@ -165,6 +165,13 @@ private:
 	XrSpace view_space = XR_NULL_HANDLE;
 	XRPose::TrackingConfidence head_pose_confidence = XRPose::XR_TRACKING_CONFIDENCE_NONE;
 
+	Size2i environment_depth_texture_size;
+	uint32_t environment_depth_texture;
+	double environment_depth_near_z;
+	double environment_depth_far_z;
+	Projection environment_depth_view_projections[2];
+	Projection environment_depth_projection_projections[2];
+
 	// When LOCAL_FLOOR isn't supported, we use an approach based on the example code in the
 	// OpenXR spec in order to emulate it.
 	// See: https://registry.khronos.org/OpenXR/specs/1.0/html/xrspec.html#XR_EXT_local_floor
@@ -546,6 +553,17 @@ public:
 	bool is_environment_blend_mode_supported(XrEnvironmentBlendMode p_blend_mode) const;
 	bool set_environment_blend_mode(XrEnvironmentBlendMode p_blend_mode);
 	XrEnvironmentBlendMode get_environment_blend_mode() const { return requested_environment_blend_mode; }
+
+	void set_environment_depth_texture_size(Size2i p_size);
+	void set_environment_depth_data(
+		uint32_t p_texture,
+		double p_near_z,
+		double p_far_z,
+		const Projection &p_view_projection_left,
+		const Projection &p_view_projection_right,
+		const Projection &p_projection_projection_left,
+		const Projection &p_projection_projection_right
+	);
 
 	enum OpenXRAlphaBlendModeSupport {
 		OPENXR_ALPHA_BLEND_MODE_SUPPORT_NONE = 0,
